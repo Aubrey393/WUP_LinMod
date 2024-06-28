@@ -43,7 +43,7 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 plot(SIMS~ARM,data=data)
 ```
 
-This plot shows that...
+This plot shows that arm strength increses. 
 
 
 ### Numerical results
@@ -76,7 +76,7 @@ The P-vaule for ARM is f 0.00000000000000022 which means that arm is signfigant.
 newdata = data.frame(ARM=88, GRIP=94)
 predict(model.1, newdata, interval = 'pred')
 ```
-The sims prediction for Arm-88 is 0.71, the predicting interval is (0.7063836, )......
+The sims prediction for Arm=88 is -0.54, the predicting interval is (-3.12, 2.04)
 
 
 ## Model 2 SIM~GRIP
@@ -85,7 +85,7 @@ The sims prediction for Arm-88 is 0.71, the predicting interval is (0.7063836, )
 ```{r}
 plot(SIMS~GRIP,data=data)
 ```
-The plot shows that...
+The plot shows that GRIP stength increases.
 
 ### Numerical results 
 ```{r}
@@ -97,7 +97,7 @@ The numerical results show there is a positive correlation between SIMS and GRIP
 
 ```{r}
 model.2 <- lm(SIMS~GRIP,data=data)
-summary.lm(model.1)
+summary.lm(model.2)
 ```
   The p-vaules for the intercept are f 0.00000000000000022 which means that the intercept is signfigant becuase it is less than 0.05. 
 
@@ -109,33 +109,92 @@ The P-vaule for GRIP is  0.00000000000000022 which is less than 0.05, which mean
 newdata = data.frame(ARM=88, GRIP=94)
 predict(model.2, newdata, interval = 'pred')
 ```
-  model1.2=lm(SIMS~GRIP)
-  model1.3=lm(sims~ARMS+GRIP)
-  
-  
-#### scatterplot with model fit
-```{r}
-plot(SIMS~GRIP,data=data)
-abline(model.2, col='blue')
-```
-The model fit shows that....
+  The prediction for arm=88 is 0.53 and the interception is (-3.12, and 2.04)
 
 
 ## Model 3 SIM~ARM+GRIP
 
-### Numerical results (cor)
 
-`
-  
+
+# Numerical(cor)
+
+```{r}
+df=data.frame(c)(SIMS=data$SIMS, GRIP=data$GRIP, ARM=data$ARM)
+cor(df)
+```
+
+
 ### Inferential  (Build 2-dimentional model.3)
+`
+```{r}
+model1.3=lm(SIMS~ARM+GRIP, data = data)
+summary(model1.3)
+```
+The p-vaules for the intercept are f 0.00000000000000022 which means that the intercept is signfigant becuase it is less than 0.05. 
+
+The P-vaule for ARM+GRIP is f 0.00000000000000022 which means that arm is signfigant. 
+  
+  
+  The p-vaule from the F fantastic is ..., this means we, the data fits the model and 
+
+sims 5.43+0.037*ARM+0.024*GRIP
+
+which one has a p-vaule less than 0.0
+
+
+The p-vaule from the F fantastic is 0.buncha 0'
+
+sims 5.43+0.037*ARM+0.024*GRIP
+
+which one has a p-vaule less than 0.05
+
 
 #### predict model.3 at target point
+Prediction interval of sims given value of 94 for GRIP and 88 for ARM
+
+```{r}
+newdata = data.frame(ARM=88, GRIP=94)
+predSIMS=predict(model1.3, newdata, interval = 'pred')
+print(predSIMS)
+```
   
+  The predicted SIMS score for GRIP=94, ARM=88 is  0.150 and the intersection is (-2.13, 2.43).
 
 ## Comparing nested models ANOVA Test
 
 ### Model.1 vs Model.3
+
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+#anova(model.1, model1.3)
+summary.lm(model.1)
+```
+The anova table shows there is a difference in the models,  it shows model 2 SIMS~ARM+GRIP with RSS 188 is the better than model 1, SIM~ARM and shows the RSS is 218 . The table also shows that we reject the null hypothesis becuase the p-vaule is 0.00000004 which is less than 0.05.
+
+
+The sims_arm+Grip is the best model.
+
+
 ### Model.2 vs Model.3
+
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+summary.lm(model.2)
+anova(model.2, model1.3)
+```
+
+Model SIMS~ARM+GRIP is better then model SIMS~GRIP  becuase the RSS is  188
+
+
+
+Model 3 is best
 
 ## Informally compare Model.1 with model.2
 
+```{r}
+summary.lm(model.1)
+summary
+```
+
+
+We conclude that model 1 is smaller than model two because it has a smaller RSS than model2.
