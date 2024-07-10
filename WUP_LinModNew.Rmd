@@ -119,7 +119,7 @@ predict(model.2, newdata, interval = 'pred')
 # Numerical(cor)
 
 ```{r}
-df=data.frame(c)(SIMS=data$SIMS, GRIP=data$GRIP, ARM=data$ARM)
+df=data.frame(SIMS=data$SIMS, GRIP=data$GRIP, ARM=data$ARM)
 cor(df)
 ```
 
